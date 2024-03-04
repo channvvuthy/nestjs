@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const { exec } = require('child_process');
+const path = require('path');
+
+const environment = process.argv[2]; // Get the environment from the command line arguments
+
+if (!environment) {
+  console.log('Usage: deploy <environment>');
+  process.exit(1);
+}
+
+
+const deployCommand = `docker-compose -f docker-compose.yml -f docker-compose.${environment}.yml up -d`;
+
+exec(deployCommand, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`exec error: ${error}`);
+    return;
+  }
+  console.log(`stdout: ${stdout}`);
+  console.error(`stderr: ${stderr}`);
+});
